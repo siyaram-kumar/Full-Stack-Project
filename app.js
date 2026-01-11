@@ -16,12 +16,10 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user.js");
 
-// ROUTES
 const listingRouter = require("./routes/listing.js");
 const reviewRouter = require("./routes/review.js");
 const userRouter = require("./routes/user.js");
 
-// DATABASE
 const dbUrl = process.env.ATLASDB_URL;
 
 mongoose
@@ -29,19 +27,15 @@ mongoose
     .then(() => console.log("connected to DB"))
     .catch((err) => console.log("DB CONNECTION ERROR:", err));
 
-// VIEW ENGINE
 app.engine("ejs", ejsMate);
 app.set("view engine", "ejs");
-app.set("views", path.join(__dirname, "views"));
+app.set("views", path.join(__dirname, "utils", "views"));
 
-// MIDDLEWARE
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 
-// 🔴 TRUST PROXY (Important for Render HTTPS)
 app.set("trust proxy", 1);
 
-// SESSION STORE
 const store = MongoStore.create({
     mongoUrl: dbUrl,
     crypto: {
@@ -69,21 +63,17 @@ const sessionOptions = {
     },
 };
 
-// 🔑 USE SESSION AND PASSPORT (ONLY ONCE)
 app.use(session(sessionOptions));
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 
-// PASSPORT LOCAL AUTH
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-// STATIC FILES
 app.use(express.static(path.join(__dirname, "public")));
 
-// FLASH + CURRENT USER
 app.use((req, res, next) => {
     res.locals.success = req.flash("success");
     res.locals.error = req.flash("error");
@@ -91,23 +81,19 @@ app.use((req, res, next) => {
     next();
 });
 
-// ROUTES
 app.use("/listings/:id/reviews", reviewRouter);
 app.use("/listings", listingRouter);
 app.use("/", userRouter);
 
-// 404 HANDLER
 app.use((req, res, next) => {
     next(new ExpressError(404, "Page Not Found"));
 });
 
-// ERROR HANDLER
 app.use((err, req, res, next) => {
     const { statusCode = 500, message = "Something went wrong" } = err;
     res.status(statusCode).render("error.ejs", { message });
 });
 
-// SERVER
 const port = process.env.PORT || 8080;
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
