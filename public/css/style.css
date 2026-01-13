@@ -75,7 +75,9 @@ body {
 }
 .card-text p {
     font-weight: 400 !important;
+    background-color: #49e881 !important;
 }
+
 .listings-link {
     text-decoration: none;
 }
@@ -138,8 +140,9 @@ body {
 
 /* Map */
 
-  #map {
-    height: 400px;
-    width: 80vh;
-  
-  }
+ #map {
+  height: 400px;
+  width: 100%;
+  border-radius: 12px;
+  margin-top: 1rem;
+}

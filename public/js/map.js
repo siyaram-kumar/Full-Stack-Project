@@ -1,19 +1,16 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const mapDiv = document.getElementById("map");
-  if (!mapDiv) return;
+const lng = coordinates[0];
+const lat = coordinates[1];
 
-  const lat = Number(mapDiv.dataset.lat);
-  const lng = Number(mapDiv.dataset.lng);
-  const title = mapDiv.dataset.title;
+// Initialize map
+const map = L.map("map").setView([lat, lng], 13);
 
-  const map = L.map("map").setView([lat, lng], 13);
+// OpenStreetMap tiles
+L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  attribution: "© OpenStreetMap contributors"
+}).addTo(map);
 
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    attribution: "© OpenStreetMap contributors"
-  }).addTo(map);
-
-  L.marker([lat, lng])
-    .addTo(map)
-    .bindPopup(title)
-    .openPopup();
-});
+// Marker with location name
+L.marker([lat, lng])
+  .addTo(map)
+  .bindPopup(`<b>${listingLocation}</b>`)
+  .openPopup();
