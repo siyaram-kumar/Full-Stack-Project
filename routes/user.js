@@ -20,9 +20,9 @@ router
     }),
     async (req, res) => {
         req.flash("success", "Welcome back to Wanderlust!");
-        const redirectUrl = res.locals.redirectUrl || "/listings/new"; // default
-        // delete req.session.redirectUrl; // cleanup
-        res.redirect(redirectUrl);      // ✅ redirect
+        const redirectUrl = res.locals.redirectUrl || "/listings/new";
+        // delete req.session.redirectUrl;
+        res.redirect(redirectUrl);      
     }
   );
 

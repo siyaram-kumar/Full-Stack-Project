@@ -1,58 +1,81 @@
-<% layout('layouts/boilerplate') %>
-<div class="row">
-  <div class="col-8 offset-2">
-    <br />
-    <h3>Create a New Listing</h3>
-    <form method="POST" action="/listings" novalidate class="needs-validation" enctype="multipart/form-data">
+<% layout("layouts/boilerplate") %>
 
-      <!-- Title -->
+<div class="row mt-3">
+  <div class="col-md-6 offset-md-3">
+    <h3>Create Listing</h3>
+    <form method="POST" action="/listings" enctype="multipart/form-data">
+
       <div class="mb-3">
-        <label class="form-label">Title :</label>
-        <input name="listing[title]" type="text" class="form-control" placeholder="Enter title" required />
-        <div class="valid-feedback">Title looks good!</div>
+        <label class="form-label">Title:</label>
+        <input name="listing[title]" type="text" class="form-control" value="<%= listing?.title || '' %>" required>
       </div>
 
-      <!-- Description -->
       <div class="mb-3">
         <label class="form-label">Description:</label>
-        <textarea name="listing[description]" class="form-control" required></textarea>
-        <div class="invalid-feedback">Please enter a short description</div>
+        <textarea name="listing[description]" class="form-control" required><%= listing?.description || '' %></textarea>
       </div>
 
-      <!-- Image Object -->
       <div class="mb-3">
-        <label class="form-label">Upload Listing Image:</label>
-        <input
-        name="listing[image]" 
-        type="file" 
-        class="form-control"
-        required />
+        <label class="form-label">Price:</label>
+        <input name="listing[price]" type="number" class="form-control" value="<%= listing?.price || '' %>" required>
       </div>
 
-      <!-- Price & Country -->
-      <div class="row">
-        <div class="mb-3 col-md-4">
-          <label class="form-label">Price :</label>
-          <input name="listing[price]" type="number" class="form-control" placeholder="1400" required />
-          <div class="invalid-feedback">Please enter a valid price</div>
-        </div>
-
-        <div class="mb-3 col-md-8">
-          <label class="form-label">Country :</label>
-          <input name="listing[country]" type="text" class="form-control" placeholder="India" required />
-          <div class="invalid-feedback">Please enter the country name</div>
-        </div>
-      </div>
-
-      <!-- Location -->
       <div class="mb-3">
-        <label class="form-label">Location :</label>
-        <input name="listing[location]" type="text" class="form-control" placeholder="Patna, Bihar" required />
-        <div class="invalid-feedback">Location should be valid</div>
+        <label class="form-label">Country:</label>
+        <input name="listing[country]" type="text" class="form-control" value="<%= listing?.country || '' %>" required>
       </div>
 
-      <button class="btn btn-success add-btn">Add</button>
-      <br /><br />
+      <div class="mb-3">
+        <label class="form-label">Location:</label>
+        <input name="listing[location]" id="location-input" type="text" class="form-control" value="<%= listing?.location || '' %>" required>
+      </div>
+
+      <!-- Map -->
+      <div id="map" style="height: 300px;" class="mb-3"></div>
+
+      <!-- Image Upload -->
+      <div class="mb-3">
+        <label class="form-label">Upload Image:</label>
+        <input name="image" type="file" class="form-control">
+      </div>
+
+      <button class="btn btn-primary">Create Listing</button>
     </form>
   </div>
 </div>
+
+<script>
+let lat = 25.5941;
+let lon = 85.1376;
+
+const map = L.map('map').setView([lat, lon], 13);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap contributors' }).addTo(map);
+
+let marker = L.marker([lat, lon], { draggable: true }).addTo(map);
+
+// Update form inputs
+marker.on('dragend', () => {
+  const pos = marker.getLatLng();
+  document.getElementById('location-input').value = `${pos.lat},${pos.lng}`;
+});
+
+// Geocode location input
+const locationInput = document.getElementById('location-input');
+locationInput.addEventListener('change', async () => {
+  const address = locationInput.value;
+  if(!address) return;
+
+  try {
+    const res = await fetch(`/geocode?address=${encodeURIComponent(address)}`);
+    const data = await res.json();
+    if(data.latitude && data.longitude){
+      lat = data.latitude;
+      lon = data.longitude;
+      map.setView([lat, lon], 13);
+      marker.setLatLng([lat, lon]);
+    }
+  } catch(e){
+    console.error("Geocode error:", e);
+  }
+});
+</script>

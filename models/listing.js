@@ -1,64 +1,68 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const review = require("./review.js");
-// const review = require("./review.js");
 
 const listingSchema = new Schema({
-    title:{
+    title: {
         type: String,
-        required: true,
+        required: true
     },
-    description: String,
-  image: {
-    type:{
-    url: String,
-    filename: String,
+    description: {
+        type: String,
+        required: true
     },
-    required: false
-    },
-    price:{
+    price: {
         type: Number,
-        required: true,
-        default: 0
+        required: true
+    },
+    country: {
+        type: String,
+        required: true
     },
     location: {
         type: String,
         required: true
     },
-    country: String,
-    reviews:[
-        {
-            type: Schema.Types.ObjectId,
-            ref: "Review",
-        }
-    ],
-    owner: {
-        type: Schema.Types.ObjectId,
-        ref: "User",
+    image: {
+        url: String,
+        filename: String
     },
     geometry: {
-      type: {
-        type: String,
-         enum: ['Point'],
-         default: 'Point',
-         required:true
-     },
+        type: {
+            type: String,
+            enum: ['Point'],
+            required: true,
+            default: 'Point'
+        },
         coordinates: {
-        type: [Number],
-        default: [] , 
-        required:true      
-         }
-    }
-    // category: {
-    //     type: String,
-    //     encum: ["mountains", "camping", "rooms",]
-    // }
-});
-
-
-listingSchema.post("findOneAndDelete", async(listing) => {
-    if (listing) {
-        await review.deleteMany({_id: {$in: listing.reviews}});
+            type: [Number],
+            required: true
+        }
+    },
+    owner: {
+        type: Schema.Types.ObjectId,
+        ref: "User"
+    },
+    reviews: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: "Review"
+        }
+    ],
+    category: {
+        type: String,
+        enum: [
+            "trending",
+            "rooms",
+            "iconic",
+            "mountains",
+            "castles",
+            "pools",
+            "camping",
+            "farms",
+            "arctic",
+            "domes",
+            "boats"
+        ]
     }
 });
 
