@@ -1,59 +1,169 @@
-<style>
-  .search-btn {
-    background-color: #fe424d;
-    color: white;
-    border-radius: 25px;
-    padding: 0 1rem 0 1rem;
-  }
-    .search-btn:hover {
-    background-color: #fe424d;
-    color: white;
-  }
- .search-btn  i{
-    display: inline;
-    margin-right: 0.5rem;
-  }
-  .search-inp {
-    border-radius:25px ;
-    padding: 0.5rem 3rem 0.5rem 3rem;
-    font-size: 1rem;
-  }
-</style>
+<body>
 
-<nav class="navbar navbar-expand-md bg-body-light border-bottom sticky-top">
+<!-- ================= NAVBAR ================= -->
+<nav class="navbar navbar-expand-md border-bottom sticky-top">
   <div class="container-fluid">
-    <a class="navbar-brand" href="/listings"><i class="fa-regular fa-compass"></i></a>
-    <button 
-      class="navbar-toggler" 
-      type="button" 
-      data-bs-toggle="collapse" 
-      data-bs-target="#navbarNavAltMarkup" 
-    >
-    <span class="navbar-toggler-icon"></span>
+
+    <a class="navbar-brand" href="/listings">
+      <i class="fa-brands fa-airbnb fs-3"></i>
+    </a>
+
+    <!-- Mobile toggle -->
+    <button class="menu-btn d-md-none" id="menuToggle">
+      <i class="fa-solid fa-bars"></i>
     </button>
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <div class="navbar-nav">
-        <a class="nav-link" href="/listings">Explore</a>
-      </div>
-      <div class="navbar-nav ms-auto">
-          <form class="d-flex" role="search">
-            <input class="form-control me-2 search-inp" type="search" placeholder="Search destinaton"/>
-            <button class="btn search-btn" type="submit">
-            <i class="fa-solid fa-magnifying-glass"></i>search
-          </form>
+
+    <!-- ================= DESKTOP ================= -->
+    <div class="d-none d-md-flex w-100 align-items-center">
+
+      <a class="fw-bold me-3 text-decoration-none text-dark" href="/listings">
+        Explore
+      </a>
+
+      <div class="search-box">
+        <input type="text" placeholder="Search destination">
+        <i class="fa-solid fa-magnifying-glass"></i>
       </div>
 
+      <!-- Desktop Right Side -->
+      <div class="ms-auto d-flex align-items-center gap-3 fw-bold">
+        <a href="/listings/new" class="text-decoration-none text-dark no-bold">
+          Airbnb your home <i class="fa-solid fa-globe fs-5 ms-1"></i>
+        </a>
 
-      <div class="navbar-nav ms-auto">
-        <a class="nav-link" href="/listings/new">Airbnb your home</a>
-        <% if(!currUser) { %>
-        <a class="nav-link" href="/signup"><b>Sign up</b></a>
-        <a class="nav-link" href="/login"><b>Log in</b></a>
-        <% } %>
-        <% if(currUser) { %>
-        <a class="nav-link" href="/logout">Logout</a>
+        <% if(!currUser){ %>
+          <a href="/signup" class="text-decoration-none text-dark">Signup</a>
+          <a href="/login" class="text-decoration-none text-dark">Login</a>
+        <% } else { %>
+          <!-- Profile Picture / Initial with Random Color -->
+          <a href="/profile" class="text-decoration-none text-dark d-flex align-items-center gap-2">
+            <% if(currUser.profileImage){ %>
+              <img src="<%= currUser.profileImage %>" 
+                   style="width:32px;height:32px;border-radius:50%;object-fit:cover;">
+            <% } else { %>
+              <div class="default-avatar" data-name="<%= currUser.firstName %>" 
+                   style="width:32px;height:32px;border-radius:50%;display:flex;
+                          justify-content:center;align-items:center;font-weight:bold;color:white;text-transform:uppercase;">
+                <%= currUser.firstName.charAt(0) %>
+              </div>
+            <% } %>
+            Profile
+          </a>
+          <a href="/logout" class="text-decoration-none text-dark">Logout</a>
         <% } %>
       </div>
+
     </div>
   </div>
 </nav>
+
+<!-- ================= MOBILE MENU ================= -->
+<div id="mobileMenu" class="mobile-menu">
+
+  <a href="/listings/new" class="d-flex align-items-center gap-2">
+    <i class="fa-solid fa-circle-plus"></i> Airbnb your home
+  </a>
+
+  <a href="/listings" class="d-flex align-items-center gap-2">
+    <i class="fa-brands fa-airbnb fs-3"></i> Trips
+  </a>
+
+  <a href="#" class="d-flex align-items-center gap-2">
+    <i class="fa-regular fa-message"></i> Messages
+  </a>
+
+  <% if(currUser){ %>
+    <a href="/profile" class="d-flex align-items-center gap-2">
+      <% if(currUser.profileImage){ %>
+        <img src="<%= currUser.profileImage %>" 
+             style="width:32px;height:32px;border-radius:50%;object-fit:cover;">
+      <% } else { %>
+        <div class="default-avatar" data-name="<%= currUser.firstName %>" 
+             style="width:32px;height:32px;border-radius:50%;display:flex;
+                    justify-content:center;align-items:center;font-weight:bold;color:white;text-transform:uppercase;">
+          <%= currUser.firstName.charAt(0) %>
+        </div>
+      <% } %>
+      Profile
+    </a>
+  <% } %>
+
+  <hr/>
+
+  <a href="#" class="d-flex align-items-center gap-2">
+    <i class="fa-solid fa-gear"></i> Account settings
+  </a>
+
+  <a href="#" class="d-flex align-items-center gap-2">
+    <i class="fa-solid fa-globe"></i> Language & Currency
+  </a>
+
+  <a href="#" class="d-flex align-items-center gap-2">
+    <i class="fa-regular fa-circle-question"></i> Help Center
+  </a>
+
+  <hr/>
+
+  <% if(!currUser){ %>
+    <a href="/signup">Signup</a>
+    <a href="/login">Login</a>
+  <% } else { %>
+    <a href="/logout">Logout</a>
+  <% } %>
+</div>
+
+<!-- ================= JS ================= -->
+<script>
+/* Random consistent color for default avatars */
+function setAvatarColors() {
+  const avatars = document.querySelectorAll('.default-avatar');
+  const colors = ["#0d6efd", "#6f42c1", "#198754", "#fd7e14", "#dc3545", "#20c997", "#6610f2"];
+  avatars.forEach(av => {
+    const name = av.dataset.name;
+    let hash = 0;
+    for(let i=0;i<name.length;i++){
+      hash = name.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    const color = colors[Math.abs(hash) % colors.length];
+    av.style.backgroundColor = color;
+  });
+}
+setAvatarColors();
+
+/* TAX TOGGLE */
+const taxSwitch = document.getElementById("switchCheckDefault");
+taxSwitch?.addEventListener("click", () => {
+  const taxInfo = document.getElementsByClassName("tax-info");
+  for (let info of taxInfo) {
+    info.style.display = info.style.display === "inline" ? "none" : "inline";
+  }
+});
+
+/* MOBILE MENU */
+const menu = document.getElementById("mobileMenu");
+const menuToggle = document.getElementById("menuToggle");
+const menuIcon = menuToggle.querySelector("i");
+
+menuToggle.onclick = () => {
+  menu.classList.toggle("active");
+  menuIcon.classList.toggle("fa-bars");
+  menuIcon.classList.toggle("fa-xmark");
+};
+
+/* FILTER TOGGLE */
+const filters = document.getElementById("filters");
+const filterToggleBtn = document.getElementById("filterToggleBtn");
+
+filterToggleBtn.onclick = (e) => {
+  e.stopPropagation();
+  filters.classList.toggle("active");
+};
+
+document.addEventListener("click", (e) => {
+  if (!filters.contains(e.target) && !filterToggleBtn.contains(e.target)) {
+    filters.classList.remove("active");
+  }
+});
+</script>
+
+</body>

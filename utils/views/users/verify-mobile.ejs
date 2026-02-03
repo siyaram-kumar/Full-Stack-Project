@@ -1,0 +1,70 @@
+<% layout("/layouts/boilerplate") %>
+
+<div class="container d-flex justify-content-center mt-5">
+  <div class="card shadow p-4" style="width:400px;">
+    <h4 class="text-center mb-3">Verify Mobile Number</h4>
+
+    <div id="recaptcha-container"></div>
+
+    <div class="mb-3">
+      <label>Mobile Number</label>
+      <input type="text" id="mobile" class="form-control" placeholder="+91XXXXXXXXXX">
+    </div>
+
+    <button class="btn btn-primary w-100" onclick="sendOTP()">Send OTP</button>
+
+    <div id="otpBox" style="display:none;" class="mt-3">
+      <label>Enter OTP</label>
+      <input type="text" id="otp" class="form-control">
+      <button class="btn btn-success w-100 mt-2" onclick="verifyOTP()">Verify OTP</button>
+    </div>
+  </div>
+</div>
+
+<!-- Firebase CDN -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyCSLy9BEjTD6gcZuv1syW1qwswyBQ73dmw",
+    authDomain: "online-listings-create.firebaseapp.com",
+    projectId: "online-listings-create",
+    storageBucket: "online-listings-create.firebasestorage.app",
+    messagingSenderId: "384368616322",
+    appId: "1:384368616322:web:d1f3d4f01add703d33659b"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+
+  window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier(
+    'recaptcha-container',
+    { size: 'normal' }
+  );
+
+  function sendOTP() {
+    const phone = document.getElementById("mobile").value;
+    auth.signInWithPhoneNumber(phone, window.recaptchaVerifier)
+      .then((confirmationResult) => {
+        window.confirmationResult = confirmationResult;
+        document.getElementById("otpBox").style.display = "block";
+        alert("OTP Sent");
+      })
+      .catch((error) => {
+        alert(error.message);
+      });
+  }
+
+  function verifyOTP() {
+    const code = document.getElementById("otp").value;
+    confirmationResult.confirm(code)
+      .then((result) => {
+        alert("Mobile Verified Successfully");
+        // yaha backend ko call kar sakte ho
+      })
+      .catch(() => {
+        alert("Invalid OTP");
+      });
+  }
+</script>

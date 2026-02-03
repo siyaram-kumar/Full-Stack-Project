@@ -1,0 +1,145 @@
+/* .listing-card {
+  border: none;
+}
+
+.listing-title {
+  font-size: 28px;
+}
+
+.description {
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+/* IMAGE WRAPPER */
+.listing-image-wrapper {
+  width: 100%;
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+/* FULL WIDTH IMAGE */
+.listing-img {
+  width: 100%;
+  height: 420px;
+  object-fit: cover;
+  display: block;
+}
+
+/* NO IMAGE */
+.no-image {
+  height: 300px;
+  background: #f2f2f2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: #777;
+}
+
+/* MAP */
+.map-box {
+  height: 320px;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+/* RESERVE CARD */
+.reserve-card {
+  border: 1px solid #ddd;
+  background: #fff;
+  top: 90px;
+}
+
+.price {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.price span {
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: #555;
+}
+
+.date-box {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.price-details {
+  font-size: 0.95rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.btn-reserve {
+  background: linear-gradient(90deg, #ff385c, #d70466);
+  color: white;
+  font-weight: 600;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 991px) {
+  .reserve-card {
+    position: static;
+  }
+}
+
+
+/* ICON BUTTONS */
+.icon-buttons button {
+  border-radius: 50%;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.icon-buttons button:hover {
+  background: #f0f0f0;
+}
+
+.icon-buttons svg {
+  display: block;
+} */
+
+
+
+/* Listing Card */
+.listing-card { background-color: #fff; }
+.listing-img { width: 100%; height: auto; object-fit: cover; }
+
+/* Stars */
+.review-card .star,
+.rating-stars .star { font-size: 1.2rem; color: #ff385c; }
+.review-card .star.filled { color: #ff385c; }
+
+/* New Review Stars */
+.new-review .star-label {
+  font-size: 2rem;
+  color: #ddd;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.new-review input:checked ~ .star-label,
+.new-review .star-label:hover,
+.new-review .star-label:hover ~ .star-label {
+  color: #ff385c;
+}
+
+/* Reserve Card */
+.reserve-card { background: #fff; border-radius: 1rem; }
+.btn-reserve { background: #ff385c; color: #fff; border: none; }
+.btn-reserve:hover { background: #e03250; }
+
+/* Map */
+.map-box { width: 100%; height: 300px; border-radius: 1rem; }
+
+/* Responsive Adjustments */
+@media(max-width:992px){ .icon-buttons { margin-top:10px; } }
+

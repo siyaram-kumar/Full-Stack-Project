@@ -1,0 +1,35 @@
+<% layout("/layouts/boilerplate") %>
+
+<div class="profile-page d-flex justify-content-center mt-5">
+  <div class="profile-card card shadow p-4" style="width: 450px;">
+
+    <!-- Profile Image -->
+    <div class="mb-3">
+      <img 
+        src="<%= user.profileImage || '/uploads/profiles/default-profile.jpg' %>" 
+        alt="Profile Image"
+        style="width:120px;height:120px;border-radius:50%;object-fit:cover;"
+      >
+    </div>
+
+    <!-- User Details (Left aligned serial) -->
+    <div class="profile-details">
+      <p><b>Username :</b> <%= user.username %></p>
+      <p><b>Email :</b> <%= user.email %></p>
+      <p><b>Mobile :</b> <%= user.mobile || 'N/A' %></p>
+
+      <% if(user.address) { %>
+        <p><b>Address :</b> <%= user.address %></p>
+      <% } %>
+
+      <% if(user.category) { %>
+        <p><b>Category :</b> <%= user.category %></p>
+      <% } %>
+    </div>
+
+    <a href="/profile/edit" class="btn btn-primary mt-3 align-self-start">
+      Edit Profile
+    </a>
+
+  </div>
+</div>

@@ -1,0 +1,94 @@
+<% layout("/layouts/boilerplate") %>
+
+<div class="container d-flex justify-content-center align-items-center" style="min-height:80vh;">
+  <div class="card shadow-lg border-0" style="width:420px; border-radius:16px;">
+
+    <div class="card-body p-4">
+
+      <h4 class="text-center mb-2">Verify Mobile Number</h4>
+      <p class="text-center text-muted mb-4">
+        OTP will be sent to your mobile number: <b><%= mobile %></b>
+      </p>
+
+      <!-- Recaptcha -->
+      <div id="recaptcha-container" class="mb-3"></div>
+
+      <!-- Send OTP -->
+      <button class="btn btn-primary w-100 mb-4" onclick="sendOTP()">
+        Send OTP
+      </button>
+
+      <hr>
+
+      <!-- OTP Input -->
+      <div class="mb-3">
+        <label class="form-label">Enter OTP</label>
+        <input 
+          type="text" 
+          id="otp" 
+          class="form-control text-center"
+          placeholder="6 digit OTP"
+        >
+      </div>
+
+      <!-- Verify OTP -->
+      <button class="btn btn-success w-100" onclick="verifyOTP()">
+        Verify OTP
+      </button>
+
+    </div>
+  </div>
+</div>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+
+<script>
+  // 🔹 Replace these with YOUR Firebase Web App config
+  const firebaseConfig = {
+    apiKey: "AIzaSyCSLy9BEjTD6gcZuv1syW1qwswyBQ73dmw",
+    authDomain: "online-listings-create.firebaseapp.com",
+    projectId: "online-listings-create",
+    storageBucket: "online-listings-create.appspot.com",
+    messagingSenderId: "384368616322",
+    appId: "1:384368616322:web:d1f3d4f01add703d33659b"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+
+  // 🔹 Recaptcha
+  window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier(
+    'recaptcha-container',
+    { size: 'normal' }
+  );
+
+  // 🔹 Send OTP function
+  function sendOTP() {
+    const phone = "<%= mobile %>"; // server se pass kiya hua mobile
+    auth.signInWithPhoneNumber(phone, window.recaptchaVerifier)
+      .then(result => {
+        window.confirmationResult = result;
+        alert("OTP sent successfully to " + phone);
+      })
+      .catch(err => alert(err.message));
+  }
+
+  // 🔹 Verify OTP function
+  function verifyOTP() {
+    const otp = document.getElementById("otp").value;
+    if(!otp){
+      alert("Please enter OTP");
+      return;
+    }
+
+    confirmationResult.confirm(otp)
+      .then(() => {
+        alert("Mobile number verified successfully!");
+        // Redirect to reset password page
+        window.location.href = "/reset-password";
+      })
+      .catch(err => alert("Invalid OTP: " + err.message));
+  }
+</script>

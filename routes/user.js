@@ -2,32 +2,68 @@ const express = require("express");
 const router = express.Router();
 const wrapAsync = require("../utils/wrapAsync");
 const passport = require("passport");
-const { saveRedirectUrl } = require("../middleware.js");
+const { saveRedirectUrl, isLoggedIn } = require("../middleware.js");
 const userController = require("../controllers/users.js");
+const User = require("../models/user"); 
 
-router.
-    route("/signup")
-        .get(userController.renderSignupForm)
-        .post( wrapAsync(userController.singup))
+// ------------------------- SIGNUP -------------------------
+router.get("/signup", userController.renderSignupForm);
+router.post("/signup", wrapAsync(userController.signup));
 
-router
-  .route("/login")
-  .get(saveRedirectUrl, userController.renderLoginForm)
-  .post(
-    passport.authenticate("local", {
-      failureRedirect: "/login",
-      failureFlash: true
-    }),
-    async (req, res) => {
-        req.flash("success", "Welcome back to Wanderlust!");
-        const redirectUrl = res.locals.redirectUrl || "/listings/new";
-        // delete req.session.redirectUrl;
-        res.redirect(redirectUrl);      
-    }
-  );
+// ------------------------- LOGIN -------------------------
+router.get("/login", saveRedirectUrl, userController.renderLoginForm);
+router.post(
+  "/login",
+  passport.authenticate("local", {
+    failureRedirect: "/login",
+    failureFlash: true,
+  }),
+  userController.login
+);
 
+// ------------------------- LOGOUT -------------------------
+router.get("/logout", userController.logOut);
 
+// ------------------------- PROFILE PAGE -------------------------
+router.get("/profile", isLoggedIn, (req, res) => {
+  res.render("users/profile");
+});
 
-router.get("/logout",userController.logOut);
+// ------------------------- EDIT PROFILE -------------------------
+router.get("/profile/edit", isLoggedIn, (req, res) => {
+  res.render("users/edit");
+});
+
+// ------------------------- FORGOT PASSWORD -------------------------
+
+// GET page for forgot password (mobile)
+router.get("/forgot-password", (req, res) => {
+  res.render("users/forgot"); // forgot.ejs
+});
+
+// POST mobile number for OTP
+router.post("/forgot-password", async (req, res) => {
+  const { mobile } = req.body;
+
+  // check if mobile number is registered
+  const user = await User.findOne({ mobile });
+  if (!user) {
+    req.flash("error", "Mobile number not registered");
+    return res.redirect("/forgot-password");
+  }
+
+  // Agar mobile registered hai, OTP page pe redirect karo
+  res.redirect("/mobile-otp?mobile=" + mobile);
+});
+
+// ------------------------- OTP PAGE -------------------------
+router.get("/mobile-otp", (req, res) => {
+  res.render("users/otp", { mobile: "+91" + req.query.mobile }); // otp.ejs
+});
+
+// ------------------------- VERIFY MOBILE (OPTIONAL) -------------------------
+router.get("/verify-mobile", (req, res) => {
+  res.render("users/verify-mobile"); // verify-mobile.ejs
+});
 
 module.exports = router;

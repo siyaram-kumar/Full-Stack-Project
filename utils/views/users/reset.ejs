@@ -1,0 +1,27 @@
+<% layout("/layouts/boilerplate") %>
+
+<div class="d-flex justify-content-center mt-5">
+  <div class="card p-4 shadow" style="width:400px;">
+
+    <h4 class="mb-3">Reset Password</h4>
+
+    <form action="/reset-password/<%= token %>" method="POST">
+
+      <div class="mb-3">
+        <label class="form-label">New Password</label>
+        <input type="password" name="password" class="form-control" required>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Confirm Password</label>
+        <input type="password" name="confirmPassword" class="form-control" required>
+      </div>
+
+      <button class="btn btn-success w-100">
+        Update Password
+      </button>
+
+    </form>
+
+  </div>
+</div>

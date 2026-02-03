@@ -1,0 +1,73 @@
+<% layout("/layouts/boilerplate") %>
+
+<div class="edit-profile-container d-flex justify-content-center mt-5">
+  <div class="edit-profile-card card p-4 shadow" style="width: 400px;">
+
+    <h3 class="text-center mb-4">Edit Profile</h3>
+
+    <!-- Profile Image -->
+    <div class="profile-image-wrapper text-center mb-3">
+      <label for="profileImage" class="profile-image-circle position-relative">
+        <img 
+          src="<%= user.profileImage || '/uploads/profiles/default-profile.jpg' %>" 
+          alt="Profile Image"
+          style="width:120px;height:120px;border-radius:50%;object-fit:cover;"
+        >
+
+        <!-- Camera Icon -->
+        <div class="camera-overlay position-absolute top-50 start-50 translate-middle
+                    d-flex flex-column align-items-center justify-content-center"
+             style="background:rgba(0,0,0,0.5);width:120px;height:120px;border-radius:50%;color:#fff;">
+          <i class="fa fa-camera"></i>
+          <small>Add</small>
+        </div>
+      </label>
+
+      <input type="file" name="profileImage" id="profileImage" accept="image/*" hidden>
+    </div>
+
+    <!-- Edit Profile Form -->
+    <form action="/profile?_method=PUT" method="POST" enctype="multipart/form-data">
+
+      <div class="mb-3">
+        <label class="form-label">Username</label>
+        <input 
+          type="text" 
+          name="username" 
+          class="form-control" 
+          value="<%= user.username %>" 
+          required
+        >
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Email</label>
+        <input 
+          type="email" 
+          name="email" 
+          class="form-control" 
+          value="<%= user.email %>" 
+          required
+        >
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Mobile Number</label>
+        <input 
+          type="text" 
+          name="mobile" 
+          class="form-control" 
+          value="<%= user.mobile || '' %>"
+        >
+      </div>
+
+      <button type="submit" class="btn btn-success w-100">
+        Update Profile
+      </button>
+    </form>
+
+  </div>
+</div>
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">

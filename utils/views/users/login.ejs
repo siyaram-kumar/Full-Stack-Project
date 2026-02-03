@@ -1,29 +1,121 @@
 <% layout('layouts/boilerplate') %>
-<div class="row mt-3">
-    <h1 class="col-6 offset-3">Login</h1>   
-    <div class="col-6 offset-3">
-        <form action="/login" method="POST" novalidate class="needs-validation">
-            <div class="mb-3">
-            <label for="username" class="form-label">Username :</label>
-                <input 
-                    name="username"
-                    id="username"
-                    type="text" 
-                    class="form-control" 
-                    required 
-                />
-            </div>
-                <div class="mb-3">
-                <label for="password" class="form-label">Password :</label>
-                    <input 
-                        name="password"
-                        id="password"
-                        type="password" 
-                        class="form-control"  
-                        required 
-                    />
-                </div>
-                <button class="btn btn-success">login</button>
-        </form>
+
+<div class="d-flex justify-content-center align-items-center min-vh-100 bg-light">
+  <div class="card shadow p-4" style="width:360px;">
+
+    <!-- Logo -->
+    <div class="text-center mb-3">
+      <img src="/images/cimage.jpg" width="80" alt="Logo">
+      <h4 class="mt-2">Login</h4>
     </div>
+
+    <!-- Login Form -->
+    <form action="/login" method="POST" novalidate class="needs-validation">
+      <!-- Username -->
+      <div class="mb-3">
+        <label class="form-label">Username</label>
+        <div class="input-group">
+          <span class="input-group-text bg-white"><i class="fa-solid fa-user"></i></span>
+          <input type="text" name="username" class="form-control" placeholder="Enter username" required>
+        </div>
+      </div>
+
+      <!-- Password -->
+      <div class="mb-3">
+        <label class="form-label">Password</label>
+        <div class="input-group">
+          <span class="input-group-text bg-white"><i class="fa-solid fa-lock"></i></span>
+          <input type="password" name="password" id="password" class="form-control" placeholder="Enter password" required>
+          <span class="input-group-text bg-white" style="cursor:pointer" onclick="togglePassword()">
+            <i class="fa-solid fa-eye" id="eyeIcon"></i>
+          </span>
+        </div>
+      </div>
+
+
+       <!-- 🛡️ Captcha one line -->
+      <div class="mb-2 d-flex align-items-center justify-content-between">
+        <label class="form-label mb-0">Captcha</label>
+
+        <div class="d-flex align-items-center gap-2">
+          <span 
+            id="captchaText"
+            class="fw-bold px-3 py-1 border rounded bg-light"
+            style="letter-spacing:3px;"
+          ></span>
+
+          <i class="fa-solid fa-rotate-right" style="cursor:pointer" onclick="generateCaptcha()"></i>
+        </div>
+      </div>
+
+      <!-- Captcha Input -->
+      <div class="mb-3">
+        <div class="input-group">
+          <span class="input-group-text bg-white">
+            <i class="fa-solid fa-shield-halved"></i>
+          </span>
+          <input
+            type="text"
+            id="captchaInput"
+            class="form-control"
+            placeholder="Enter captcha"
+            required
+          >
+        </div>
+      </div>
+
+
+      <!-- Login Button -->
+      <button class="btn btn-primary w-100" type="submit">
+        Login <i class="fa-solid fa-key"></i>
+      </button>
+
+      <div class="d-flex justify-content-center align-items-center mb-3">
+          <a href="/forgot-password" class="text-decoration-none">
+            Forgot password?
+          </a>
+        </div>
+
+      <div class="text-center mt-3">
+        <span>Don't have an account? <a href="/signup">Sign Up</a></span>
+      </div>
+    </form>
+  </div>
 </div>
+
+<script>
+  function togglePassword() {
+    const pass = document.getElementById("password");
+    const eye = document.getElementById("eyeIcon");
+    if (pass.type === "password") {
+      pass.type = "text";
+      eye.classList.replace("fa-eye", "fa-eye-slash");
+    } else {
+      pass.type = "password";
+      eye.classList.replace("fa-eye-slash", "fa-eye");
+    } 
+  }
+
+  let captcha = "";
+
+  function generateCaptcha() {
+    const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+    captcha = "";
+    for (let i = 0; i < 5; i++) {
+      captcha += chars[Math.floor(Math.random() * chars.length)];
+    }
+    document.getElementById("captchaText").innerText = captcha;
+  }
+
+  function validateCaptcha() {
+    const input = document.getElementById("captchaInput").value;
+    if (input !== captcha) {
+      alert("Captcha incorrect");
+      generateCaptcha();
+      return false;
+    }
+    return true;
+  }
+
+  window.onload = generateCaptcha;
+</script>

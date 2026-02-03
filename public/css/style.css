@@ -14,7 +14,7 @@ body {
     height:3rem ;
     background-color: white;
 }
-.fa-compass {
+.fa-airbnb {
     color:#fe424d;
     font-size: 2rem;
 }
@@ -147,3 +147,299 @@ body {
   border-radius: 12px;
   margin-top: 1rem;
 }
+
+
+
+
+
+
+
+
+
+body{
+  margin:0;
+  font-family:"Plus Jakarta Sans", sans-serif;
+}
+
+/* ================= NAVBAR ================= */
+.navbar{
+  height:3.5rem;
+  background:#fff;
+  z-index:4000;
+}
+
+/* Search */
+.search-box{
+  display:flex;
+  align-items:center;
+  border:1px solid #ddd;
+  border-radius:25px;
+  padding:.25rem .8rem;
+}
+.search-box input{
+  border:none;
+  outline:none;
+}
+.search-box i{
+  color:#ff385c;
+  cursor: pointer;
+}
+
+/* Mobile nav icon */
+.menu-btn{
+  border:none;
+  background:none;
+  font-size:1.6rem;
+}
+
+/* ================= MOBILE MENU ================= */
+.mobile-menu{
+  position:fixed;
+  top:3.5rem;
+  right:-100%;
+  width:85%;
+  max-width:240px;
+  height:calc(100vh - 3.5rem);
+  background:#fff;
+  padding:1.2rem;
+  z-index:5000;
+  transition:right .35s ease;
+  box-shadow:-6px 0 20px rgba(0,0,0,.25);
+}
+.mobile-menu.active{ right:0; }
+.mobile-menu a{
+  display:block;
+  padding:.7rem 0;
+  text-decoration:none;
+  font-weight:600;
+  color:black;
+}
+
+/* ================= FILTER BAR ================= */
+.filter-wrapper{
+  position:fixed;
+  top:3.5rem;
+  width:100%;
+  background:#f7f7f7;
+  z-index:3000;
+  display:flex;
+  align-items:center;
+}
+
+.filters{
+  display:flex;
+  gap:2rem;
+  padding:.8rem 1.5rem;
+  /* width:100%; */
+  align-items:center;
+  flex-wrap: wrap;
+}
+
+.filter{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  /* font-weight:700; */
+  text-decoration:none;
+  color:rgb(27, 26, 26);
+}
+.filter:hover{
+  cursor: pointer;
+  color: rgb(57, 53, 53);
+}
+/* .filter i{ font-size:1.1rem; } */
+
+.filter-toggle{
+  display:none;
+  font-size:1.6rem;
+  padding:.8rem 1rem;
+  cursor:pointer;
+}
+
+.tax-toggle{
+  margin-left:auto;
+  font-weight:600;
+  border: 1px solid black;
+   position:fixed;
+    right:.8rem;
+    background:#fff;
+    padding:.3rem .7rem;
+    border-radius:20px;
+    box-shadow:0 2px 8px rgba(0,0,0,.15);
+    z-index:3500;
+    text-align: center;
+
+}
+.tax-info{
+  display: none;
+}
+
+/* ================= MOBILE FILTER ================= */
+@media(max-width:768px){
+
+  .filter-toggle{ display:block; }
+
+  .filters{
+    position:fixed;
+    top:3.5rem;
+    left:-260px;
+    width:250px;
+    height:calc(100vh - 3.5rem);
+    background:#fff;
+    flex-direction:column;
+    align-items:flex-start;
+    padding:1rem;
+    gap:1.2rem;
+    transition:left .3s ease;
+    box-shadow:5px 0 20px rgba(0,0,0,.25);
+  }
+
+  .filters.active{ left:0; }
+
+  .filter{
+    flex-direction:row;
+    gap:1rem;
+  }
+
+  .tax-toggle{
+    position:fixed;
+    right:.8rem;
+    background:#fff;
+    padding:.3rem .7rem;
+    border-radius:20px;
+    box-shadow:0 2px 8px rgba(0,0,0,.15);
+    z-index:3500;
+    text-align: center;
+    border: 1px solid black;
+  }
+}
+
+.container{
+  margin-top:3rem;
+}
+
+
+
+/* Edit.ejs */
+
+
+/* Center container */
+.edit-profile-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 90vh;
+    background-color: #f5f6fa;
+    padding: 20px;
+}
+
+/* Card styling */
+.edit-profile-card {
+    background-color: #fff;
+    border-radius: 15px;
+    padding: 30px;
+    max-width: 450px;
+    width: 100%;
+    text-align: center;
+}
+
+/* Title */
+.edit-profile-title {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    font-weight: 600;
+    color: #333;
+}
+
+/* Profile circle */
+.profile-image-wrapper {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 20px;
+}
+
+.profile-image-circle {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    border: 2px solid #28a745;
+}
+
+.profile-image-circle img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Camera overlay */
+.camera-overlay {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 30px;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 13px;
+    gap: 5px;
+    border-bottom-left-radius: 50%;
+    border-bottom-right-radius: 50%;
+    transition: background 0.3s;
+}
+
+.camera-overlay i {
+    font-size: 13px;
+}
+
+.camera-overlay:hover {
+    background: rgba(0, 0, 0, 0.8);
+}
+
+/* Hide file input
+input[type="file"] {
+    display: none;
+} */
+
+/* Form label */
+.form-label {
+    font-weight: 500;
+}
+
+/* Button */
+.btn-success {
+    font-weight: 500;
+    border-radius: 8px;
+}
+
+
+
+
+
+/* Show.ejs  */
+
+
+
+.profile-card {
+  border-radius: 12px;
+}
+
+.profile-details p {
+  margin-bottom: 8px;
+  font-size: 16px;
+}
+
+.profile-details b {
+  width: 100px;
+  display: inline-block;
+}
+
+
+
+
