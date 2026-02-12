@@ -1,58 +1,58 @@
 <body>
 
 <!-- ================= NAVBAR ================= -->
-<nav class="navbar navbar-expand-md border-bottom sticky-top">
+<nav class="navbar navbar-expand-md border-bottom sticky-top bg-white">
   <div class="container-fluid">
 
-    <a class="navbar-brand" href="/listings">
-      <i class="fa-brands fa-airbnb fs-3"></i>
+    <!-- Brand -->
+    <a class="navbar-brand d-flex align-items-center" href="/listings" aria-label="Home">
+      <i class="fa-brands fa-airbnb fs-3 text-danger"></i>
     </a>
 
-    <!-- Mobile toggle -->
-    <button class="menu-btn d-md-none" id="menuToggle">
+    <!-- Mobile Toggle -->
+    <button class="menu-btn d-md-none" id="menuToggle" aria-label="Menu">
       <i class="fa-solid fa-bars"></i>
     </button>
 
     <!-- ================= DESKTOP ================= -->
     <div class="d-none d-md-flex w-100 align-items-center">
 
-      <a class="fw-bold me-3 text-decoration-none text-dark" href="/listings">
+      <a href="/listings" class="fw-semibold me-4 text-decoration-none text-dark">
         Explore
       </a>
 
-      <div class="search-box">
-        <input type="text" placeholder="Search destination">
+      <!-- Search -->
+      <div class="search-box position-relative">
+        <input type="text" placeholder="Search destination" aria-label="Search">
         <i class="fa-solid fa-magnifying-glass"></i>
       </div>
 
-      <!-- Desktop Right Side -->
-      <div class="ms-auto d-flex align-items-center gap-3 fw-bold">
-        <a href="/listings/new" class="text-decoration-none text-dark no-bold">
-          Airbnb your home <i class="fa-solid fa-globe fs-5 ms-1"></i>
+      <!-- Right Section -->
+      <div class="ms-auto d-flex align-items-center gap-4 fw-semibold">
+
+        <a href="/listings/new" class="text-decoration-none text-dark">
+          Airbnb your home <i class="fa-solid fa-globe ms-1"></i>
         </a>
 
         <% if(!currUser){ %>
           <a href="/signup" class="text-decoration-none text-dark">Signup</a>
           <a href="/login" class="text-decoration-none text-dark">Login</a>
         <% } else { %>
-          <!-- Profile Picture / Initial with Random Color -->
-          <a href="/profile" class="text-decoration-none text-dark d-flex align-items-center gap-2">
+          <a href="/profile" class="d-flex align-items-center gap-2 text-decoration-none text-dark">
             <% if(currUser.profileImage){ %>
-              <img src="<%= currUser.profileImage %>" 
-                   style="width:32px;height:32px;border-radius:50%;object-fit:cover;">
+              <img src="<%= currUser.profileImage %>" class="rounded-circle"
+                   style="width:32px;height:32px;object-fit:cover;">
             <% } else { %>
-              <div class="default-avatar" data-name="<%= currUser.firstName %>" 
-                   style="width:32px;height:32px;border-radius:50%;display:flex;
-                          justify-content:center;align-items:center;font-weight:bold;color:white;text-transform:uppercase;">
+              <div class="default-avatar" data-name="<%= currUser.firstName %>">
                 <%= currUser.firstName.charAt(0) %>
               </div>
             <% } %>
             Profile
           </a>
-          <a href="/logout" class="text-decoration-none text-dark">Logout</a>
+          <a href="/logout" class="text-decoration-none text-danger">Logout</a>
         <% } %>
-      </div>
 
+      </div>
     </div>
   </div>
 </nav>
@@ -60,27 +60,17 @@
 <!-- ================= MOBILE MENU ================= -->
 <div id="mobileMenu" class="mobile-menu">
 
-  <a href="/listings/new" class="d-flex align-items-center gap-2">
-    <i class="fa-solid fa-circle-plus"></i> Airbnb your home
-  </a>
-
-  <a href="/listings" class="d-flex align-items-center gap-2">
-    <i class="fa-brands fa-airbnb fs-3"></i> Trips
-  </a>
-
-  <a href="#" class="d-flex align-items-center gap-2">
-    <i class="fa-regular fa-message"></i> Messages
-  </a>
+  <a href="/listings/new"><i class="fa-solid fa-circle-plus"></i> Airbnb your home</a>
+  <a href="/listings"><i class="fa-brands fa-airbnb"></i> Trips</a>
+  <a href="#"><i class="fa-regular fa-message"></i> Messages</a>
 
   <% if(currUser){ %>
     <a href="/profile" class="d-flex align-items-center gap-2">
       <% if(currUser.profileImage){ %>
-        <img src="<%= currUser.profileImage %>" 
-             style="width:32px;height:32px;border-radius:50%;object-fit:cover;">
+        <img src="<%= currUser.profileImage %>" class="rounded-circle"
+             style="width:32px;height:32px;object-fit:cover;">
       <% } else { %>
-        <div class="default-avatar" data-name="<%= currUser.firstName %>" 
-             style="width:32px;height:32px;border-radius:50%;display:flex;
-                    justify-content:center;align-items:center;font-weight:bold;color:white;text-transform:uppercase;">
+        <div class="default-avatar" data-name="<%= currUser.firstName %>">
           <%= currUser.firstName.charAt(0) %>
         </div>
       <% } %>
@@ -88,81 +78,44 @@
     </a>
   <% } %>
 
-  <hr/>
+  <hr>
 
-  <a href="#" class="d-flex align-items-center gap-2">
-    <i class="fa-solid fa-gear"></i> Account settings
-  </a>
+  <a href="#"><i class="fa-solid fa-gear"></i> Account settings</a>
+  <a href="#"><i class="fa-solid fa-globe"></i> Language & Currency</a>
+  <a href="#"><i class="fa-regular fa-circle-question"></i> Help Center</a>
 
-  <a href="#" class="d-flex align-items-center gap-2">
-    <i class="fa-solid fa-globe"></i> Language & Currency
-  </a>
-
-  <a href="#" class="d-flex align-items-center gap-2">
-    <i class="fa-regular fa-circle-question"></i> Help Center
-  </a>
-
-  <hr/>
+  <hr>
 
   <% if(!currUser){ %>
     <a href="/signup">Signup</a>
     <a href="/login">Login</a>
   <% } else { %>
-    <a href="/logout">Logout</a>
+    <a href="/logout" class="text-danger">Logout</a>
   <% } %>
 </div>
 
 <!-- ================= JS ================= -->
 <script>
-/* Random consistent color for default avatars */
-function setAvatarColors() {
-  const avatars = document.querySelectorAll('.default-avatar');
-  const colors = ["#0d6efd", "#6f42c1", "#198754", "#fd7e14", "#dc3545", "#20c997", "#6610f2"];
-  avatars.forEach(av => {
-    const name = av.dataset.name;
+/* Avatar color */
+(() => {
+  const colors = ["#0d6efd","#6f42c1","#198754","#fd7e14","#dc3545","#20c997","#6610f2"];
+  document.querySelectorAll(".default-avatar").forEach(av => {
+    const name = av.dataset.name || "U";
     let hash = 0;
-    for(let i=0;i<name.length;i++){
-      hash = name.charCodeAt(i) + ((hash << 5) - hash);
-    }
-    const color = colors[Math.abs(hash) % colors.length];
-    av.style.backgroundColor = color;
+    for (let c of name) hash = c.charCodeAt(0) + ((hash << 5) - hash);
+    av.style.backgroundColor = colors[Math.abs(hash) % colors.length];
   });
-}
-setAvatarColors();
+})();
 
-/* TAX TOGGLE */
-const taxSwitch = document.getElementById("switchCheckDefault");
-taxSwitch?.addEventListener("click", () => {
-  const taxInfo = document.getElementsByClassName("tax-info");
-  for (let info of taxInfo) {
-    info.style.display = info.style.display === "inline" ? "none" : "inline";
-  }
-});
-
-/* MOBILE MENU */
+/* Mobile Menu */
 const menu = document.getElementById("mobileMenu");
-const menuToggle = document.getElementById("menuToggle");
-const menuIcon = menuToggle.querySelector("i");
+const toggle = document.getElementById("menuToggle");
+const icon = toggle?.querySelector("i");
 
-menuToggle.onclick = () => {
+toggle?.addEventListener("click", () => {
   menu.classList.toggle("active");
-  menuIcon.classList.toggle("fa-bars");
-  menuIcon.classList.toggle("fa-xmark");
-};
-
-/* FILTER TOGGLE */
-const filters = document.getElementById("filters");
-const filterToggleBtn = document.getElementById("filterToggleBtn");
-
-filterToggleBtn.onclick = (e) => {
-  e.stopPropagation();
-  filters.classList.toggle("active");
-};
-
-document.addEventListener("click", (e) => {
-  if (!filters.contains(e.target) && !filterToggleBtn.contains(e.target)) {
-    filters.classList.remove("active");
-  }
+  icon.classList.toggle("fa-bars");
+  icon.classList.toggle("fa-xmark");
 });
 </script>
 

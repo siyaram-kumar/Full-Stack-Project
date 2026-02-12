@@ -13,15 +13,18 @@ const userSchema = new Schema({
   },
   mobile: {
     type: String,
-    required: true,
-    unique: true
+    required: false, // optional now
+    unique: true,
+    sparse: true
   },
   profileImage: {
     type: String,
     default: "/images/default-user.png"
   },
-
-  // 📲 Mobile OTP verification
+  avatarColor: {
+    type: String // for first-letter color
+  },
+  // OTP verification fields
   otp: Number,
   otpExpires: Date,
   isVerified: {
@@ -33,4 +36,3 @@ const userSchema = new Schema({
 userSchema.plugin(passportLocalMongoose);
 
 module.exports = mongoose.model("User", userSchema);
-

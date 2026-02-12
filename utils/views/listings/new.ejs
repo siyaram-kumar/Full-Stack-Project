@@ -3,86 +3,107 @@
 <div class="row justify-content-center mt-5">
   <div class="col-md-8">
 
-    <div class="card shadow p-4 rounded-4">
-      <h3 class="mb-4 text-center">Create Listing</h3>
+    <div class="card shadow p-0 rounded-4">
 
-      <form method="POST" action="/listings" enctype="multipart/form-data">
+      <!-- ================= HEADING ================= -->
+      <div class="text-center py-3 rounded-top"
+           style="background: linear-gradient(90deg, #4f46e5, #06b6d4); color:white;">
+        <h3 class="fw-bold mb-0 d-flex justify-content-center align-items-center gap-2">
+          <i class="fa-solid fa-circle-plus"></i>
+          Create Listing
+        </h3>
+      </div>
 
-        <!-- Title -->
-        <div class="mb-3">
-          <label class="form-label">Title</label>
-          <input name="listing[title]" type="text" class="form-control" value="<%= listing?.title || '' %>" required>
-        </div>
+      <div class="p-4">
+        <form method="POST" action="/listings" enctype="multipart/form-data">
 
-        <!-- Description -->
-        <div class="mb-3">
-          <label class="form-label">Description</label>
-          <textarea name="listing[description]" class="form-control" rows="3" required><%= listing?.description || '' %></textarea>
-        </div>
-
-        <!-- Price & Country -->
-        <div class="row mb-3">
-          <div class="col">
-            <label class="form-label">Price</label>
-            <input name="listing[price]" type="number" class="form-control" value="<%= listing?.price || '' %>" required>
+          <!-- Title -->
+          <div class="mb-3">
+            <label class="form-label">Title</label>
+            <input name="listing[title]" type="text" class="form-control"
+                   value="<%= listing?.title || '' %>" required>
           </div>
-          <div class="col">
-            <label class="form-label">Country</label>
-            <input name="listing[country]" type="text" class="form-control" value="<%= listing?.country || '' %>" required>
+
+          <!-- Description -->
+          <div class="mb-3">
+            <label class="form-label">Description</label>
+            <textarea name="listing[description]" class="form-control" rows="3"
+                      required><%= listing?.description || '' %></textarea>
           </div>
-        </div>
 
-        <!-- Location -->
-        <div class="mb-3">
-          <label class="form-label">Location</label>
-          <input name="listing[location]" id="location-input" type="text" class="form-control" value="<%= listing?.location || '' %>" required>
-        </div>
-
-        <!-- Map -->
-        <div id="map" class="mb-4 rounded-3 shadow" style="height: 350px;"></div>
-
-        <!-- Image Upload -->
-        <div class="mb-3">
-          <label class="form-label">Upload Image</label>
-          <div class="image-upload-wrapper rounded-3 p-3 text-center border border-dashed" style="cursor:pointer; background:#f9f9f9;">
-            <span>Click or Drag & Drop an Image</span>
-            <input type="file" name="image" accept="image/*" id="imageInput" style="display:none;">
+          <!-- Price & Country -->
+          <div class="row mb-3">
+            <div class="col">
+              <label class="form-label">Price</label>
+              <input name="listing[price]" type="number" class="form-control"
+                     value="<%= listing?.price || '' %>" required>
+            </div>
+            <div class="col">
+              <label class="form-label">Country</label>
+              <input name="listing[country]" type="text" class="form-control"
+                     value="<%= listing?.country || '' %>" required>
+            </div>
           </div>
-          <div class="mt-2">
-            <img id="preview" style="max-width:100%; max-height:200px; display:none;" class="rounded-3 shadow-sm" />
-          </div>
-        </div>
 
-        <button class="btn btn-primary w-100">Create Listing</button>
-      </form>
+          <!-- Location -->
+          <div class="mb-3">
+            <label class="form-label">Location</label>
+            <input name="listing[location]" id="location-input" type="text"
+                   class="form-control"
+                   value="<%= listing?.location || '' %>" required>
+          </div>
+
+          <!-- Map -->
+          <div id="map" class="mb-4 rounded-3 shadow" style="height: 350px;"></div>
+
+          <!-- Image Upload -->
+          <div class="mb-3">
+            <label class="form-label">Upload Image</label>
+            <div class="image-upload-wrapper rounded-3 p-3 text-center border border-dashed"
+                 style="cursor:pointer; background:#f9f9f9;">
+              <span>Click or Drag & Drop an Image</span>
+              <input type="file" name="image" accept="image/*"
+                     id="imageInput" style="display:none;">
+            </div>
+            <div class="mt-2">
+              <img id="preview"
+                   style="max-width:100%; max-height:200px; display:none;"
+                   class="rounded-3 shadow-sm" />
+            </div>
+          </div>
+
+          <button class="btn btn-primary w-100">
+            Create Listing
+          </button>
+
+        </form>
+      </div>
+
     </div>
 
   </div>
 </div>
 
-<!-- Leaflet JS -->
+<!-- ================= MAP & JS (UNCHANGED) ================= -->
+
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
 <script>
-  // Initial coordinates
   let lat = 25.5941;
   let lon = 85.1376;
 
-  // Map setup
   const map = L.map('map').setView([lat, lon], 13);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap contributors' }).addTo(map);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    { attribution: '&copy; OpenStreetMap contributors' }).addTo(map);
 
-  // Draggable marker
   let marker = L.marker([lat, lon], { draggable: true }).addTo(map);
 
-  // Update location input on drag
   marker.on('dragend', () => {
     const pos = marker.getLatLng();
     document.getElementById('location-input').value = `${pos.lat},${pos.lng}`;
   });
 
-  // Geocode location input
   const locationInput = document.getElementById('location-input');
   locationInput.addEventListener('change', async () => {
     const address = locationInput.value;
@@ -91,24 +112,25 @@
       const res = await fetch(`/geocode?address=${encodeURIComponent(address)}`);
       const data = await res.json();
       if(data.latitude && data.longitude){
-        lat = data.latitude;
-        lon = data.longitude;
-        map.setView([lat, lon], 13);
-        marker.setLatLng([lat, lon]);
+        map.setView([data.latitude, data.longitude], 13);
+        marker.setLatLng([data.latitude, data.longitude]);
       }
     } catch(e){
       console.error("Geocode error:", e);
     }
   });
 
-  // Image preview
   const wrapper = document.querySelector(".image-upload-wrapper");
   const input = document.getElementById("imageInput");
   const preview = document.getElementById("preview");
 
   wrapper.addEventListener("click", () => input.click());
-  wrapper.addEventListener("dragover", e => { e.preventDefault(); wrapper.style.background = "#e9ecef"; });
-  wrapper.addEventListener("dragleave", e => { e.preventDefault(); wrapper.style.background = "#f9f9f9"; });
+  wrapper.addEventListener("dragover", e => {
+    e.preventDefault(); wrapper.style.background = "#e9ecef";
+  });
+  wrapper.addEventListener("dragleave", e => {
+    e.preventDefault(); wrapper.style.background = "#f9f9f9";
+  });
   wrapper.addEventListener("drop", e => {
     e.preventDefault();
     wrapper.style.background = "#f9f9f9";
@@ -118,11 +140,16 @@
       showPreview(file);
     }
   });
-  input.addEventListener("change", () => { if(input.files[0]) showPreview(input.files[0]); });
+  input.addEventListener("change", () => {
+    if(input.files[0]) showPreview(input.files[0]);
+  });
 
   function showPreview(file) {
     const reader = new FileReader();
-    reader.onload = e => { preview.src = e.target.result; preview.style.display = "block"; };
+    reader.onload = e => {
+      preview.src = e.target.result;
+      preview.style.display = "block";
+    };
     reader.readAsDataURL(file);
   }
 </script>
